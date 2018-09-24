@@ -27,7 +27,7 @@ class RoleEloquentRepository extends EloquentRepository implements RoleRepositor
             return $result;
         } catch (\Exception $e) {
             DB::rollBack();
-            // return $e->getMessage();
+            return $e->getMessage();
             return null;
         }
     }

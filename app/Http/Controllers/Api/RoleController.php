@@ -104,5 +104,6 @@ class RoleController extends Controller
     public function destroy($id)
     {
         //
+        $uers = $this->roleRepository->delete($id);
     }
 }

@@ -18,7 +18,7 @@ Route::get('destroy/{id}', 'Api\UserController@destroy');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::post('create-role', 'Api\RoleController@store');
-   
+    Route::get('destroy-role/{id}', 'Api\RoleController@destroy');
 });
 
 Route::get('products', 'Api\PostController@getAll');

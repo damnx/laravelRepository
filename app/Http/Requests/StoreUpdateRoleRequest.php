@@ -28,7 +28,7 @@ class StoreUpdateRoleRequest extends FormRequest
         $id = isset(request()->id) ? request()->id : 'NULL';
 
         $rules = [
-            'name' => 'required|max:255|unique:roles,name,' . $id . ',id,deleted_at,NULL',
+            'name' => "required|max:255|unique:roles,name,{$id},id,deleted_at,NULL",
         ];
 
         $groupUserId = request()->groupUserId;
