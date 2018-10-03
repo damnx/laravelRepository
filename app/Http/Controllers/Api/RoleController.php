@@ -32,6 +32,25 @@ class RoleController extends Controller
         //
     }
 
+    public function getRolesPaginate(Request $request)
+    {
+        $whereData = [];
+        $name = trim($request->input('name'));
+        if ($name) {
+            $whereData[] = ['name', 'like', $name . '%'];
+        }
+
+        $roles = $this->roleRepository->getRolsPaginate($whereData);
+        $results = [
+            'status' => 0,
+            "message" => "Get Roles Success",
+            'error' => [],
+            'data' => $roles,
+        ];
+        return response()->json($results);
+       
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -92,7 +111,35 @@ class RoleController extends Controller
      */
     public function update(StoreUpdateRoleRequest $request, $id)
     {
-        //
+        $request = $request->all();
+        $idUser = Auth::id();
+        $roleRequest = [
+            'name' => $request['name'],
+            'description' => isset($request['description']) ? $request['description'] : null,
+            'creator_id' => $idUser,
+            'permissions' => isset($request['permissions']) ? array_combine($request['permissions'], $request['permissions']) : null,
+        ];
+
+        $idUsers = $request['groupUserId'];
+        $roles = $this->roleRepository->updateRole($id, $roleRequest, $idUsers);
+
+        if ($roles) {
+            $results = [
+                'status' => 0,
+                "message" => "Update Role Success",
+                'error' => [],
+                'data' => $roles,
+            ];
+            return response()->json($results);
+        }
+
+        $results = [
+            'status' => 1,
+            "message" => "Update Role Error",
+            'error' => [],
+            'data' => [],
+        ];
+        return response()->json($results);
     }
 
     /**

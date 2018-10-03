@@ -35,6 +35,16 @@ interface RepositoryInterface
     public function findByField($field, $value = null, $columns = array('*'));
 
     /**
+     * where array
+     * @param $whereData [
+     * ['name', 'like', 'ta%'],
+     * ]
+     * @param $columns array
+     * @return mixed
+     */
+    public function whereArray(array $whereData);
+
+    /**
      * Create
      * @param array $attributes
      * @return mixed
@@ -50,7 +60,7 @@ interface RepositoryInterface
     public function update($id, array $attributes);
 
     public function with($relations);
-    
+
     /**
      * Delete
      * @param $id

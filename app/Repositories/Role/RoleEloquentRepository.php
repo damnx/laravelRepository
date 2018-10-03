@@ -17,8 +17,7 @@ class RoleEloquentRepository extends EloquentRepository implements RoleRepositor
 
         try {
             DB::beginTransaction();
-
-            $result = $this->_model->create($roles);
+            $result = EloquentRepository::create($roles);
             if (!$result) {
                 return null;
             }
@@ -30,6 +29,29 @@ class RoleEloquentRepository extends EloquentRepository implements RoleRepositor
             return $e->getMessage();
             return null;
         }
+    }
+
+    public function updateRole($id, array $roles, array $usres)
+    {
+        try {
+            DB::beginTransaction();
+            $result = EloquentRepository::update($id, $roles);
+            if (!$result) {
+                return null;
+            }
+            $result->users()->sync($usres);
+            DB::commit();
+            return $result;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return null;
+        }
+    }
+
+    public function getRolsPaginate(array $whereData, $columns = array('*'))
+    {
+        $result = EloquentRepository::with('users')->whereArray($whereData)->paginate();
+        return $result;
     }
 
 }

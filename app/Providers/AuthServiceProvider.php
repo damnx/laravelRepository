@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Acl\DefinePolicies;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
@@ -14,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Roles' => 'App\Policies\RolePolicy',
     ];
 
     /**
@@ -25,6 +26,16 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        // check is_sadmin oke
+        Gate::before(function ($user) {
+            if ($user->is_sadmin) {
+                return true;
+            }
+        });
+
+        DefinePolicies::defineAbilities();
+
         Passport::routes();
         //
     }

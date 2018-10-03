@@ -1,0 +1,33 @@
+lệnh laravel
+    1: tạo model
+        php artisan make:model 'Test\SomeModel'
+
+    2: tạo controler
+        php artisan make:controller API/PhotoController --api
+
+    3: migration
+        - php artisan make:migration create_users_table --create=users
+        - php artisan make:migration add_votes_to_users_table --table=users
+
+    4: authentication default của Laravel
+        php artisan make:auth
+
+    5. unit 
+        phpunit
+        phpunit tests/Unit/PostTest
+
+    6.  gọi file constants
+        $auth = config('constants.userAuthKey');
+
+    7. Form Request Validation
+        php artisan make:request StoreBlogPost
+        
+    8.  Tạo factory 
+        php artisan make:factory UserFactory
+        
+
+
+II viết tests 
+    1: tạo factory tưng ứng với các model
+      
+    2: 

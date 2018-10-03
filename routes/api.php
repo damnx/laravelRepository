@@ -18,6 +18,8 @@ Route::get('destroy/{id}', 'Api\UserController@destroy');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::post('create-role', 'Api\RoleController@store');
+    Route::put('update-role/{id}', 'Api\RoleController@update');
+    Route::get('get-roles', 'Api\RoleController@getRolesPaginate');
     Route::get('destroy-role/{id}', 'Api\RoleController@destroy');
 });
 

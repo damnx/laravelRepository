@@ -15,13 +15,13 @@ class PostTest extends TestCase
      *
      * @return void
      */
-    public function testfindPost()
-    {
+    // public function testfindPost()
+    // {
 
-        $postFactory = factory(PostModel::class)->create();
+    //     $postFactory = factory(PostModel::class)->create();
 
-        $getPost = PostModel::find($postFactory->id);
+    //     $getPost = PostModel::find($postFactory->id);
 
-        $this->assertEquals($postFactory->id, $getPost->id);
-    }
+    //     $this->assertEquals($postFactory->id, $getPost->id);
+    // }
 }

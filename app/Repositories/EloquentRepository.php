@@ -62,7 +62,7 @@ abstract class EloquentRepository implements RepositoryInterface
      */
     public function find($id, $columns = array('*'))
     {
-        $result = $this->_model->findOrFail($id, $columns);
+        $result = $this->_model->find($id, $columns);
         return $result;
     }
 
@@ -75,8 +75,22 @@ abstract class EloquentRepository implements RepositoryInterface
      */
     public function findByField($field, $value = null, $columns = array('*'))
     {
-        $model = $this->_model->where($field, '=', $value)->get($columns);
-        return $model;
+        $result = $this->_model->where($field, '=', $value)->get($columns);
+        return $result;
+    }
+
+    /**
+     * where array
+     * @param $whereData [
+     * ['name', 'like', 'ta%'],
+     * ]
+     * @param $columns array
+     * @return mixed
+     */
+    public function whereArray(array $whereData)
+    {
+        $result = $this->_model->where($whereData);
+        return $result;
     }
 
     /**

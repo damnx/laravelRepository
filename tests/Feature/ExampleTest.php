@@ -2,10 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\OAuthTestCase;
 
-class ExampleTest extends TestCase
+class ExampleTest extends OAuthTestCase
 {
     /**
      * A basic test example.

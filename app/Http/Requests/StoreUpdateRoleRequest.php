@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Gate;
 
 class StoreUpdateRoleRequest extends FormRequest
 {
@@ -15,7 +16,10 @@ class StoreUpdateRoleRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if (isset(request()->id)) {
+            return Gate::allows('UPDATE_ROLES');
+        }
+        return Gate::allows('CREATE_ROLES');
     }
 
     /**
