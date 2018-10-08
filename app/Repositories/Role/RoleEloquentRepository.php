@@ -12,9 +12,8 @@ class RoleEloquentRepository extends EloquentRepository implements RoleRepositor
         return Roles::class;
     }
 
-    public function createRole(array $roles, array $usres)
+    public function createRole(array $roles, $usres)
     {
-
         try {
             DB::beginTransaction();
             $result = EloquentRepository::create($roles);
@@ -31,7 +30,7 @@ class RoleEloquentRepository extends EloquentRepository implements RoleRepositor
         }
     }
 
-    public function updateRole($id, array $roles, array $usres)
+    public function updateRole($id, array $roles, $usres)
     {
         try {
             DB::beginTransaction();

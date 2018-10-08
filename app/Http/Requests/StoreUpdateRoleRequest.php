@@ -33,17 +33,8 @@ class StoreUpdateRoleRequest extends FormRequest
 
         $rules = [
             'name' => "required|max:255|unique:roles,name,{$id},id,deleted_at,NULL",
+            'groupUserId' => 'required'
         ];
-
-        $groupUserId = request()->groupUserId;
-        if (is_array($groupUserId)) {
-            foreach ($groupUserId as $key => $value) {
-                $rules['groupUserId.' . $key] = 'required|max:36';
-            }
-        } else {
-            $rules['groupUserId'] = 'required|array';
-        }
-
         return $rules;
     }
 

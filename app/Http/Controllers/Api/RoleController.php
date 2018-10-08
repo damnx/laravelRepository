@@ -88,6 +88,7 @@ class RoleController extends Controller
             'error' => [],
             'data' => [],
         ];
+        
         return response()->json($results);
     }
 

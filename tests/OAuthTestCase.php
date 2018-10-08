@@ -24,7 +24,7 @@ class OAuthTestCase extends TestCase
         $this->faker = Factory::create();
         $data = [
             "id" => uniqid(null, true),
-            "name" => "testName",
+            "name" => "testNames",
             "email" => $this->faker->email,
             "password" => bcrypt("123456"),
             "phone_number" => "12345678901",
@@ -35,12 +35,11 @@ class OAuthTestCase extends TestCase
         $response = $this->post('/oauth/token', [
             'grant_type' => 'password',
             'client_id' => 2,
-            'client_secret' => 'FQvEtlLLazb6ojo7xJJBzZ3qxMPkZfrHu7wbNHAa',
+            'client_secret' => 'v4fT9xi7ooXNvlIor8Ajwf143JAUkP3Z2thefIug',
             'username' => $newUser->email,
             'password' => '123456',
             'scope' => '*',
         ]);
-
         $this->response = $response;
         $content = json_decode($this->response->content());
         $this->token = $content->access_token;
@@ -58,7 +57,7 @@ class OAuthTestCase extends TestCase
         $responseSA = $this->post('/oauth/token', [
             'grant_type' => 'password',
             'client_id' => 2,
-            'client_secret' => 'FQvEtlLLazb6ojo7xJJBzZ3qxMPkZfrHu7wbNHAa',
+            'client_secret' => 'v4fT9xi7ooXNvlIor8Ajwf143JAUkP3Z2thefIug',
             'username' => $newUser->email,
             'password' => '123456',
             'scope' => '*',
@@ -70,10 +69,11 @@ class OAuthTestCase extends TestCase
 
     public function getToken($user)
     {
+
         $response = $this->post('/oauth/token', [
             'grant_type' => 'password',
             'client_id' => 2,
-            'client_secret' => 'FQvEtlLLazb6ojo7xJJBzZ3qxMPkZfrHu7wbNHAa',
+            'client_secret' => 'v4fT9xi7ooXNvlIor8Ajwf143JAUkP3Z2thefIug',
             'username' => $user['email'],
             'password' => $user['password'],
             'scope' => '*',
