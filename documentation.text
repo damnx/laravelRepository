@@ -24,6 +24,8 @@ lệnh laravel
         
     8.  Tạo factory 
         php artisan make:factory UserFactory
+    9.  Tạo test
+        php artisan make:test UserTest
         
 
 

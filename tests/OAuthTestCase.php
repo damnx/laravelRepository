@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Roles;
 use App\User;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -18,16 +19,13 @@ class OAuthTestCase extends TestCase
 
     public function setUp()
     {
-        $test = factory(App\User::class, 3)->create();
-        dd($test);
 
         parent::setUp();
         $this->faker = Factory::create();
-
         $data = [
             "id" => uniqid(null, true),
             "name" => "testName",
-            "email" => "email@gmail.com",
+            "email" => $this->faker->email,
             "password" => bcrypt("123456"),
             "phone_number" => "12345678901",
         ];
@@ -83,7 +81,6 @@ class OAuthTestCase extends TestCase
 
         $this->response = $response;
         $content = json_decode($this->response->content());
-
         return $content->access_token;
 
     }
@@ -92,24 +89,16 @@ class OAuthTestCase extends TestCase
     {
         $data = [
             "id" => uniqid(null, true),
-            "name" => "testName",
+            "name" => "testNamea",
             "email" => $this->faker->email,
-            "password" => bcrypt("123456"),
-            "fullname" => "Ten Full Name",
+            "password" => bcrypt("123456789"),
             "phone_number" => "12345678901",
-            "customer_type" => 1,
         ];
-
         $user = User::create($data);
-        $role = factory(Role::class)->create();
+        $role = factory(Roles::class)->create();
         $role->permissions = $permission;
-
         $role->save();
-        UserRole::create([
-            'user_id' => $user->id,
-            'role_id' => $role->id,
-        ]);
-
-        return $this->getToken(["email" => $data['email'], "password" => "123456"]);
+        $role->users()->sync($user->id);
+        return $this->getToken(["email" => $data['email'], "password" => "123456789"]);
     }
 }

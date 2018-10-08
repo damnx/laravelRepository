@@ -22,7 +22,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
-        'phone_number' => rand(100000000, 999999999),
+        'phone_number' => 1234,
         'is_active' => 1
     ];
 });
