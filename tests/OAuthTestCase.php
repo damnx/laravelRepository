@@ -35,7 +35,7 @@ class OAuthTestCase extends TestCase
         $response = $this->post('/oauth/token', [
             'grant_type' => 'password',
             'client_id' => 2,
-            'client_secret' => 'v4fT9xi7ooXNvlIor8Ajwf143JAUkP3Z2thefIug',
+            'client_secret' => 'FQvEtlLLazb6ojo7xJJBzZ3qxMPkZfrHu7wbNHAa',
             'username' => $newUser->email,
             'password' => '123456',
             'scope' => '*',
@@ -57,7 +57,7 @@ class OAuthTestCase extends TestCase
         $responseSA = $this->post('/oauth/token', [
             'grant_type' => 'password',
             'client_id' => 2,
-            'client_secret' => 'v4fT9xi7ooXNvlIor8Ajwf143JAUkP3Z2thefIug',
+            'client_secret' => 'FQvEtlLLazb6ojo7xJJBzZ3qxMPkZfrHu7wbNHAa',
             'username' => $newUser->email,
             'password' => '123456',
             'scope' => '*',
@@ -73,7 +73,7 @@ class OAuthTestCase extends TestCase
         $response = $this->post('/oauth/token', [
             'grant_type' => 'password',
             'client_id' => 2,
-            'client_secret' => 'v4fT9xi7ooXNvlIor8Ajwf143JAUkP3Z2thefIug',
+            'client_secret' => 'FQvEtlLLazb6ojo7xJJBzZ3qxMPkZfrHu7wbNHAa',
             'username' => $user['email'],
             'password' => $user['password'],
             'scope' => '*',

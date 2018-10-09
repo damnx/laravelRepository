@@ -48,7 +48,7 @@ class RoleController extends Controller
             'data' => $roles,
         ];
         return response()->json($results);
-       
+
     }
 
     /**
@@ -88,7 +88,7 @@ class RoleController extends Controller
             'error' => [],
             'data' => [],
         ];
-        
+
         return response()->json($results);
     }
 
@@ -152,6 +152,24 @@ class RoleController extends Controller
     public function destroy($id)
     {
         //
-        $uers = $this->roleRepository->delete($id);
+        $role = $this->roleRepository->delete($id);
+        if (!$role) {
+            $results = [
+                'status' => 1,
+                "message" => "Delete Role Error",
+                'error' => [],
+                'data' => [],
+            ];
+            return response()->json($results);
+        }
+
+        $results = [
+            'status' => 0,
+            "message" => "Delete Role Success",
+            'error' => [],
+            'data' => $role,
+        ];
+        return response()->json($results);
+
     }
 }
