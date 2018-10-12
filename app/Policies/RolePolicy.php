@@ -24,6 +24,11 @@ class RolePolicy
         return $user->hasAccess('VIEW_ROLES');
     }
 
+    public function getRolesPaginate(User $user)
+    {
+        return $user->hasAccess('LIST_ROLES');
+    }
+
     public function create(User $user)
     {
         return $user->hasAccess('CREATE_ROLES');
@@ -36,6 +41,6 @@ class RolePolicy
 
     public function destroy(User $user)
     {
-        return $user->hasAccess('DELETE_JOB_CALENDAR');
+        return $user->hasAccess('DELETE_ROLES');
     }
 }

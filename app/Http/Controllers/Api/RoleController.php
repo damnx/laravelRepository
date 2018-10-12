@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DestroyRoleRequest;
+use App\Http\Requests\ListRoleRequests;
 use App\Http\Requests\StoreUpdateRoleRequest;
+use App\Http\Requests\ViewRoleRequest;
 use App\Repositories\Role\RoleRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,15 +35,22 @@ class RoleController extends Controller
         //
     }
 
-    public function getRolesPaginate(Request $request)
+    public function getRolesPaginate(ListRoleRequests $request)
     {
         $whereData = [];
         $name = trim($request->input('name'));
+        $pageSize = (int) $request->input('pageSize');
         if ($name) {
             $whereData[] = ['name', 'like', $name . '%'];
         }
 
-        $roles = $this->roleRepository->getRolsPaginate($whereData);
+        if ($pageSize) {
+            $pageSize = $pageSize;
+        } else {
+            $pageSize = null;
+        }
+
+        $roles = $this->roleRepository->getRolsPaginate($pageSize, $whereData);
         $results = [
             'status' => 0,
             "message" => "Get Roles Success",
@@ -98,9 +108,27 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ViewRoleRequest $request, $id)
     {
         //
+        $results = $this->roleRepository->show($id);
+        if (!$results) {
+            $results = [
+                'status' => 1,
+                "message" => "Get Role Error",
+                'error' => [],
+                'data' => [],
+            ];
+            return response()->json($results);
+        }
+        $results = [
+            'status' => 0,
+            "message" => "Update Role Success",
+            'error' => [],
+            'data' => $results,
+        ];
+        return response()->json($results);
+
     }
 
     /**
@@ -149,9 +177,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DestroyRoleRequest $request, $id)
     {
-        //
+
         $role = $this->roleRepository->delete($id);
         if (!$role) {
             $results = [
@@ -170,6 +198,5 @@ class RoleController extends Controller
             'data' => $role,
         ];
         return response()->json($results);
-
     }
 }

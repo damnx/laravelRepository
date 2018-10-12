@@ -47,9 +47,19 @@ class RoleEloquentRepository extends EloquentRepository implements RoleRepositor
         }
     }
 
-    public function getRolsPaginate(array $whereData, $columns = array('*'))
+    public function getRolsPaginate($limit, array $whereData, $columns = array('*'))
     {
-        $result = EloquentRepository::with('users')->whereArray($whereData)->paginate();
+        $limit = is_null($limit) ? config('constants.limit') : $limit;
+        $result = Roles::with('users')->where($whereData)->paginate($limit, $columns);
+        return $result;
+    }
+
+    public function show($id)
+    {
+        if (!$id) {
+            return false;
+        }
+        $result = Roles::with('users')->where('id', $id)->first();
         return $result;
     }
 

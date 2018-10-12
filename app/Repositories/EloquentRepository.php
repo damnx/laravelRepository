@@ -49,7 +49,6 @@ abstract class EloquentRepository implements RepositoryInterface
      */
     public function paginate($limit = null, $columns = array('*'))
     {
-
         $limit = is_null($limit) ? config('constants.limit') : $limit;
         $results = $this->_model->paginate($limit, $columns);
         return $results;
@@ -76,20 +75,6 @@ abstract class EloquentRepository implements RepositoryInterface
     public function findByField($field, $value = null, $columns = array('*'))
     {
         $result = $this->_model->where($field, '=', $value)->get($columns);
-        return $result;
-    }
-
-    /**
-     * where array
-     * @param $whereData [
-     * ['name', 'like', 'ta%'],
-     * ]
-     * @param $columns array
-     * @return mixed
-     */
-    public function whereArray(array $whereData)
-    {
-        $result = $this->_model->where($whereData);
         return $result;
     }
 

@@ -15,7 +15,7 @@ class UpdateRoleTest extends OAuthTestCase
 
     protected $data;
     private $tokenUpdateRole;
-    private $idRole;
+    private $role;
     public function setUp()
     {
         parent::setUp();
@@ -24,11 +24,9 @@ class UpdateRoleTest extends OAuthTestCase
             'groupUserId' => $this->faker->uuid,
             'permissions' => ['CREATE_ROLES'],
         ];
-
         $this->tokenUpdateRole = $this->tokenPermission(['UPDATE_ROLES' => 'UPDATE_ROLES']);
-
         $role = factory(Roles::class)->create();
-        $this->idRole = $role['id'];
+        $this->role = $role;
     }
 
     /**
@@ -44,7 +42,7 @@ class UpdateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token . str_random(3),
-        ])->put('api/update-role/' . $this->idRole, $this->data);
+        ])->put('api/roles/' . $this->role['id'], $this->data);
         $response->assertStatus(401);
     }
 
@@ -61,7 +59,7 @@ class UpdateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,
-        ])->put('api/update-role/' . $this->idRole, $this->data);
+        ])->put('api/roles/' . $this->role['id'], $this->data);
         $response->assertStatus(403);
     }
     /**
@@ -75,7 +73,7 @@ class UpdateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,
-        ])->put('api/update-rolesss/' . $this->idRole, $this->data);
+        ])->put('api/update-rolesss/' . $this->role['id'], $this->data);
         $response->assertStatus(404);
     }
 
@@ -100,7 +98,7 @@ class UpdateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenUpdateRole,
-        ])->put('api/update-role/' . $this->idRole, $data);
+        ])->put('api/roles/' . $this->role['id'], $data);
         $content = json_decode($response->content(), true);
         $this->assertEquals(1, $content['status']);
         $this->assertEquals('The name field is required.', $content['errors']['name'][0]);
@@ -129,7 +127,8 @@ class UpdateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenUpdateRole,
-        ])->put('api/update-role/' . $this->idRole, $data);
+        ])->put('api/roles/' . $this->role['id'], $data);
+        
         $content = json_decode($response->content(), true);
         $this->assertEquals(1, $content['status']);
         $this->assertEquals('The name may not be greater than 255 characters.', $content['errors']['name'][0]);
@@ -158,7 +157,7 @@ class UpdateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenUpdateRole,
-        ])->put('api/update-role/' . $this->idRole, $data);
+        ])->put('api/roles/' . $this->role['id'], $data);
 
         $content = json_decode($response->content(), true);
         $this->assertEquals(1, $content['status']);
@@ -176,9 +175,8 @@ class UpdateRoleTest extends OAuthTestCase
      *          status = 0
      *          $data['name'], $content['data']['name']
      */
-    public function testCreateSuccess()
+    public function testUpdateSuccess()
     {
-        $role = factory(Roles::class)->create();
         $data = [
             'name' => $this->faker->name,
             'groupUserId' => $this->faker->uuid,
@@ -187,10 +185,10 @@ class UpdateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenUpdateRole,
-        ])->put('api/update-role/' . $role['id'], $data);
+        ])->put('api/roles/' . $this->role['id'], $data);
 
         $content = json_decode($response->content(), true);
-       
+
         $this->assertEquals(0, $content['status']);
         $this->assertEquals($data['name'], $content['data']['name']);
     }

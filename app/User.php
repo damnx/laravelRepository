@@ -24,7 +24,7 @@ class User extends Authenticatable
     public $incrementing = false;
 
     protected $fillable = [
-        'id', 'name', 'email', 'password', 'is_sadmin', 'is_active',
+        'id', 'name', 'email', 'password', 'is_sadmin', 'is_active','phone_number',
     ];
 
     /**
@@ -48,7 +48,6 @@ class User extends Authenticatable
 
     public function hasAccess(string $permissions)
     {
-
         // check if the permission in $role
         foreach ($this->roles as $role) {
             if (array_search($permissions, $role->permissions)) {

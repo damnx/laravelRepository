@@ -30,7 +30,7 @@ class CreateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token . str_random(3),
-        ])->post('api/create-role', $this->data);
+        ])->post('api/roles', $this->data);
         $response->assertStatus(401);
     }
 
@@ -39,7 +39,7 @@ class CreateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,
-        ])->post('api/create-role', $this->data);
+        ])->post('api/roles', $this->data);
         $response->assertStatus(403);
     }
 
@@ -48,7 +48,7 @@ class CreateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,
-        ])->post('api/create-rolesss', $this->data);
+        ])->post('api/rolessss', $this->data);
         $response->assertStatus(404);
     }
 
@@ -58,12 +58,10 @@ class CreateRoleTest extends OAuthTestCase
             'name' => '',
             'groupUserId' => '',
         ];
-
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenCreateRole,
-        ])->post('api/create-role', $data);
-
+        ])->post('api/roles', $data);
         $content = json_decode($response->content(), true);
         $this->assertEquals(1, $content['status']);
         $this->assertEquals('The name field is required.', $content['errors']['name'][0]);
@@ -80,7 +78,7 @@ class CreateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenCreateRole,
-        ])->post('api/create-role', $data);
+        ])->post('api/roles', $data);
         $content = json_decode($response->content(), true);
         $this->assertEquals(1, $content['status']);
         $this->assertEquals('The name may not be greater than 255 characters.', $content['errors']['name'][0]);
@@ -96,12 +94,12 @@ class CreateRoleTest extends OAuthTestCase
         $response1 = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenCreateRole,
-        ])->post('api/create-role', $data);
+        ])->post('api/roles', $data);
 
         $response2 = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenCreateRole,
-        ])->post('api/create-role', $data);
+        ])->post('api/roles', $data);
 
         $content = json_decode($response2->content(), true);
         $this->assertEquals(1, $content['status']);
@@ -113,13 +111,12 @@ class CreateRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->tokenCreateRole,
-        ])->post('api/create-role', $this->data);
-       
+        ])->post('api/roles', $this->data);
+
         $content = json_decode($response->content(), true);
         $this->assertEquals(0, $content['status']);
         $this->assertEquals($this->data['name'], $content['data']['name']);
         $this->assertEquals('CREATE_ROLES', $content['data']['permissions']['CREATE_ROLES']);
     }
-
-
+    
 }

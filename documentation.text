@@ -15,6 +15,7 @@ lệnh laravel
     5. unit 
         phpunit
         phpunit tests/Unit/PostTest
+        php artisan make:test ViewRoleTest
 
     6.  gọi file constants
         $auth = config('constants.userAuthKey');

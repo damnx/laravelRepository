@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Models\Roles;
 use Tests\OAuthTestCase;
 
-class ListRoleTest extends OAuthTestCase
+class ViewRoleTest extends OAuthTestCase
 {
     /**
      * A basic test example.
@@ -14,16 +14,16 @@ class ListRoleTest extends OAuthTestCase
      */
 
     protected $data;
-    private $tokenUpdateRole;
+    private $tokenViewRole;
 
     public function setUp()
     {
         parent::setUp();
-        $this->tokenUpdateRole = $this->tokenPermission(['LIST_ROLES' => 'LIST_ROLES']);
+        $this->tokenViewRole = $this->tokenPermission(['VIEW_ROLES' => 'VIEW_ROLES']);
         $role = [
             'name' => 'damnx ' . $this->faker->name,
         ];
-        $this->data = factory(Roles::class, 25)->create($role);
+        $this->data = factory(Roles::class)->create($role);
     }
 
     /**
@@ -39,7 +39,7 @@ class ListRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token . str_random(3),
-        ])->get('api/roles/');
+        ])->get('api/roles/' . $this->data['id']);
         $response->assertStatus(401);
     }
 
@@ -55,7 +55,7 @@ class ListRoleTest extends OAuthTestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,
-        ])->get('api/roles/');
+        ])->get('api/roles/' . $this->data['id']);
         $response->assertStatus(403);
     }
 
@@ -70,44 +70,20 @@ class ListRoleTest extends OAuthTestCase
     {
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->tokenUpdateRole,
-        ])->get('api/roless/');
+            'Authorization' => 'Bearer ' . $this->tokenViewRole,
+        ])->get('api/rolesss/' . $this->data['id']);
         $response->assertStatus(404);
     }
 
-    /**
-     * get list role thành công phân trang số bản ghi constants.limit
-     * pre data: user có quyền
-     * output:
-     *          status = 0
-     *          count($content['data']['data']) = 20
-     */
-    public function testGetListPaginateSuccess()
+    public function testGetRoleSuccess()
     {
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->tokenUpdateRole,
-        ])->get('api/roles/');
+            'Authorization' => 'Bearer ' . $this->tokenViewRole,
+        ])->get('api/roles/' . $this->data['id']);
 
         $content = json_decode($response->content(), true);
-        $this->assertEquals(config('constants.limit'), count($content['data']['data']));
-    }
-
-    /**
-     * get list role page = 1, Search name like damnx% và limit = config('constants.limit')
-     * pre data: user có quyền
-     * output:
-     *          status = 0
-     *          count($content['data']['data']) = 20
-     */
-    public function testGetListSearchPaginateSuccess()
-    {
-        $response = $this->withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->tokenUpdateRole,
-        ])->get('api/roles?name=damnx');
-
-        $content = json_decode($response->content(), true);
-        $this->assertEquals(config('constants.limit'), count($content['data']['data']));
+        $this->assertEquals(0, $content['status']);
+        $this->assertEquals($this->data['name'], $content['data']['name']);
     }
 }

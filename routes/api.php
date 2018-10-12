@@ -17,10 +17,11 @@ Route::post('registration', 'Api\UserController@store');
 Route::get('destroy/{id}', 'Api\UserController@destroy');
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::post('create-role', 'Api\RoleController@store');
-    Route::put('update-role/{id}', 'Api\RoleController@update');
-    Route::get('list-roles', 'Api\RoleController@getRolesPaginate');
-    Route::get('destroy-role/{id}', 'Api\RoleController@destroy');
+    Route::post('roles', 'Api\RoleController@store');
+    Route::put('roles/{id}', 'Api\RoleController@update');
+    Route::get('roles', 'Api\RoleController@getRolesPaginate');
+    Route::delete('roles/{id}', 'Api\RoleController@destroy');
+    Route::get('roles/{id}', 'Api\RoleController@show');
 });
 
 Route::get('products', 'Api\PostController@getAll');
